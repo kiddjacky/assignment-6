@@ -7,14 +7,85 @@
 //
 
 #import "AppDelegate.h"
+#import "FlickrHelper.h"
+#import "DocumentHelper.h"
+#import "Photo+Flickr.h"
+
 
 @implementation AppDelegate
+
+
+#define FOREGROUND_FLICKR_FETCH_INTERVAL (30)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [self startFlickrFetch];
+    [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
+                                     target:self
+                                   selector:@selector(startFlickrFetch:)
+                                   userInfo:nil
+                                    repeats:YES];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     return YES;
 }
+
+-(void) startFlickrFetch:(NSTimer *) timer
+{
+    [self startFlickrFetch];
+}
+
+
+-(void) startFlickrFetch
+{
+    [FlickrHelper startBackgroundDownloadRecentPhotosOnCompletion:^(NSArray *photos, void (^whenDone) ()) {
+            NSLog(@"%lu photos fetched", (unsigned long)[photos count]);
+            [self useDocumentWithFlickrPhotos:photos];
+        if (whenDone) whenDone();
+    }];
+    NSLog(@"start");
+}
+
+-(void) application:(UIApplication *)application
+handleEventsForBackgroundURLSession:(NSString *)identifier
+  completionHandler:(void (^)())completionHandler
+{
+    [FlickrHelper handleEventsForBackgroundURLSession:identifier
+                                    completionHandler:completionHandler];
+}
+
+
+- (void) application:(UIApplication *)application
+performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [FlickrHelper loadTopRegionsOnCompletion:^(NSArray *photos, NSError *error) {
+        if (error) {
+            NSLog(@"Flickr background fetch failed: %@", error);
+            completionHandler(UIBackgroundFetchResultFailed);
+        }
+        else {
+            NSLog(@"%lu photos fetched in perform fetch", (unsigned long)[photos count]);
+            [self useDocumentWithFlickrPhotos:photos];
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    }];
+    NSLog(@"in perform Fetch");
+}
+
+-(void) useDocumentWithFlickrPhotos:(NSArray *)photos
+{
+    [DocumentHelper useDocumentWithOperation:^(UIManagedDocument *document, BOOL success) {
+        if(success) {
+            NSLog(@"success");
+            [Photo loadPhotosFromFlickrArray:photos
+                    intoManagedObjectContext:document.managedObjectContext];
+            [document saveToURL:document.fileURL
+               forSaveOperation:UIDocumentSaveForOverwriting
+              completionHandler:nil];
+        }
+    }];
+}
+
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {

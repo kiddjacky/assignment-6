@@ -11,9 +11,22 @@
 @interface FlickrHelper : FlickrFetcher
 
 + (void)loadTopPlacesOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler;
++ (void)loadTopRegionsOnCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler;
 + (void)loadPhotosInPlace:(NSDictionary *)place
                maxResults:(NSUInteger)results
              onCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler;
+
++(void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^) (NSArray *photos, void(^whenDne)())) completionHandler;
++(void)handleEventsForBackgroundURLSession:(NSString *)identifier
+                         completionHandler:(void(^)())completionHandler;
+
+
+
+
+@property (strong, nonatomic) NSURLSession *downloadSession;
+
+@property (copy, nonatomic) void (^recentPhotosCompletionHandler)(NSArray *photos, void(^whenDone)());
+@property (copy, nonatomic) void (^downloadBackgroundURLSessionCompletionHandler)();
 
 + (NSString *)countryOfPlace:(NSDictionary *)place;
 + (NSString *)titleOfPlace:(NSDictionary *)place;
@@ -28,5 +41,10 @@
 
 + (NSURL *)URLforPhoto:(NSDictionary *)photo;
 + (NSString *)IDforPhoto:(NSDictionary *)photo;
+
++ (NSURL *)URLforThumbnail:(NSDictionary *)photo;
++ (NSString *)ownerOfPhoto:(NSDictionary *)photo;
++ (NSString *)placeIDforPhoto:(NSDictionary *)photo;
+
 
 @end

@@ -29,6 +29,7 @@
     _scrollView.contentSize = self.image ? self.image.size : CGSizeZero;
 }
 
+
 - (UIImageView *)imageView
 {
     if (!_imageView) {

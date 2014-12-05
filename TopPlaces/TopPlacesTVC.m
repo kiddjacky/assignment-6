@@ -20,10 +20,11 @@
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointMake(0, -self.refreshControl.frame.size.height) animated:YES];
     
-    [FlickrHelper loadTopPlacesOnCompletion:^(NSArray *places, NSError *error) {
+    [FlickrHelper loadTopRegionsOnCompletion:^(NSArray *places, NSError *error) {
         if (!error) {
             self.places = places;
             [self.refreshControl endRefreshing];
+            NSLog(@"places is %@", places);
         } else {
             NSLog(@"Error loading TopPlaces: %@", error);
         }
@@ -33,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fetchPlaces];
+ //   [self fetchPlaces];
 }
 
 @end
