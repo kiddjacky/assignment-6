@@ -13,7 +13,7 @@
 
 @interface Recent : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * lastView;
+@property (nonatomic, retain) NSDate * lastView;
 @property (nonatomic, retain) Photo *photo;
-
++(Recent *) recentPhoto:(Photo *)photo;
 @end

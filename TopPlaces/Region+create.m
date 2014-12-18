@@ -9,6 +9,7 @@
 #import "Region+create.h"
 #import "Photographer.h"
 #import "FlickrHelper.h"
+#import "DocumentHelper.h"
 
 @implementation Region (create)
 
@@ -60,13 +61,22 @@
 +(void) loadRegionNamesFromFlickrIntoManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Region"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name.length=%@", nil];
+    request.predicate = [NSPredicate predicateWithFormat:@"name.length = %@", nil];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     
-    if (!matches || error || [matches count] > 1) {
+    if (!matches || error) {
         //handle error
+        if (error) {
+        NSLog(@"in region error state");
+        }
+        if (!matches) {
+            NSLog(@"nothing match name.length");
+        }
+        else {
+            NSLog(@"match count more than 1");
+        }
     }
     else {
         BOOL saveDocument = NO;
@@ -76,7 +86,57 @@
                 saveDocument = YES;
             }
             
-            //FlickrHelper startBackgroundDownloadRegionForPlaceID:match.placeID
+            [FlickrHelper startBackgroundDownloadRegionForPlaceID:match.placeID
+                                                     onCompletion:^(NSString *regionName, void(^whenDone)()) {
+                                                         NSLog(@"start download region");
+                [DocumentHelper useDocumentWithOperation:^(UIManagedDocument *document, BOOL success)  {
+                    if (success) {
+                        [document.managedObjectContext performBlock:^{
+                            Region *region = nil;
+                            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Region"];
+                            request.predicate = [NSPredicate predicateWithFormat:@"placeID = %@", match.placeID];
+                            //NSLog(@"match is %@, region name is %@", match, regionName);
+                            NSError *error;
+                            NSArray *IDmatches = [document.managedObjectContext executeFetchRequest:request error:&error];
+                            
+                            if (!IDmatches || ([IDmatches count] !=1)) {
+                                //handle error
+                            }
+                            else { //ID match and it is the only ID
+                                region = [IDmatches lastObject];
+                                request.predicate = [NSPredicate predicateWithFormat:@"name = %@", regionName];
+                                NSArray *nameMatches = [document.managedObjectContext executeFetchRequest:request error:&error];
+                                if (!nameMatches) {
+                                    //handle error
+                                }
+                                else if (![nameMatches count]) {
+                                    //NSLog(@"region name is %@",regionName);
+                                    region.name = regionName;
+                                } else {
+                                    //NSLog(@"%@ with existing other places", regionName);
+                                    region.name = regionName;
+                                    for (Region *match in nameMatches) {
+                                        region.photos = [region.photos setByAddingObjectsFromSet:match.photos];
+                                        region.num_photos = @([region.photos count]);
+                                        region.photographers = [region.photographers setByAddingObjectsFromSet:match.photographers];
+                                        region.num_photographers = @([region.photographers count]);
+                                        [document.managedObjectContext deleteObject:match];
+                                    }
+                                }
+                                if (saveDocument) {
+                                    [document saveToURL:document.fileURL
+                                       forSaveOperation:UIDocumentSaveForOverwriting
+                                      completionHandler:nil];
+                                    //NSLog(@"save regions");
+                                }
+                            }
+                            if (whenDone) whenDone();
+                         }];
+                    } else {
+                        if (whenDone) whenDone();
+                    }
+                }];
+            }];
         }
     }
 }

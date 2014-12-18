@@ -17,7 +17,7 @@
         <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Region" inverseName="photographers" inverseEntity="Region" syncable="YES"/>
     </entity>
     <entity name="Recent" representedClassName="Recent" syncable="YES">
-        <attribute name="lastView" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastView" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="photo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="recent" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Region" representedClassName="Region" syncable="YES">
@@ -31,7 +31,7 @@
     <elements>
         <element name="Photo" positionX="-351" positionY="-2100" width="128" height="180"/>
         <element name="Photographer" positionX="-128" positionY="-1879" width="128" height="88"/>
-        <element name="Recent" positionX="-342" positionY="-1870" width="128" height="73"/>
+        <element name="Recent" positionX="-342" positionY="-1870" width="128" height="75"/>
         <element name="Region" positionX="-155" positionY="-2097" width="128" height="133"/>
     </elements>
 </model>

@@ -10,6 +10,7 @@
 #import "FlickrHelper.h"
 #import "DocumentHelper.h"
 #import "Photo+Flickr.h"
+#import "PhotoDatabaseAvailability.h"
 
 
 @implementation AppDelegate
@@ -20,13 +21,21 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [self startFlickrFetch];
-    [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
-                                     target:self
-                                   selector:@selector(startFlickrFetch:)
-                                   userInfo:nil
-                                    repeats:YES];
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [DocumentHelper useDocumentWithOperation:^(UIManagedDocument *document, BOOL success) {
+        if (success) {
+            NSDictionary *userInfo = document.managedObjectContext ? @{ PhotoDatabaseAvailabilityContext : document.managedObjectContext} : nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:PhotoDatabaseAvailabilityNotification
+                                                                object:self
+                                                              userInfo:userInfo];
+            [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
+                                             target:self
+                                           selector:@selector(startFlickrFetch:)
+                                           userInfo:nil
+                                            repeats:YES];
+        }
+    }];
+    [self startFlickrFetch];
     return YES;
 }
 

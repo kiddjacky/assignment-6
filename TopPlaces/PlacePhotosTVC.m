@@ -26,7 +26,7 @@
                          maxResults:MAX_PHOTO_RESULTS
                        onCompletion:^(NSArray *photos, NSError *error) {
                            if (!error) {
-                               self.photos = photos;
+                               //self.photos = photos;
                                [self.refreshControl endRefreshing];
                            } else {
                                NSLog(@"Error loading Photos of %@: %@", self.place, error);

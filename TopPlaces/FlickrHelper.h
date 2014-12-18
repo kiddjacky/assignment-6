@@ -20,7 +20,12 @@
 +(void)handleEventsForBackgroundURLSession:(NSString *)identifier
                          completionHandler:(void(^)())completionHandler;
 
+typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)());
++(void) startBackgroundDownloadRegionForPlaceID:(NSString *)placeID
+                                   onCompletion:(RegionCompletionHandler) completionHandler;
 
+
+@property (strong, nonatomic) NSMutableDictionary *regionCompletionHandlers;
 
 
 @property (strong, nonatomic) NSURLSession *downloadSession;

@@ -61,6 +61,7 @@
     for (NSDictionary *photo in photos) {
         [self photoWithFlickrInfo:photo inManagedObjectContext:context];
     }
+    NSLog(@"load region name");
     [Region loadRegionNamesFromFlickrIntoManagedObjectContext:context];
 }
 

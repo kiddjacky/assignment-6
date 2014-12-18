@@ -30,22 +30,22 @@
 -(void)useDocumentWithOperation:(void (^)(UIManagedDocument *document, BOOL success))operation
 {
     UIManagedDocument *document = self.document;
-    NSLog(@"in document");
+    //NSLog(@"in document");
     if ([self checkAndSetPreparingDocument]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self performSelector:@selector(useDocumentWithOperation:)
                        withObject:operation
                        afterDelay:DOCUMENT_NOT_READY_RETRY_TIMEOUT];
         });
-        NSLog(@"prepare");
+       // NSLog(@"prepare");
     } else {
-        NSLog(@"else");
+        //NSLog(@"else");
         if(![[NSFileManager defaultManager] fileExistsAtPath:[document.fileURL path]]) {
-            NSLog(@"success is unknown");
+           // NSLog(@"success is unknown");
             [document saveToURL:document.fileURL
                forSaveOperation:UIDocumentSaveForCreating
               completionHandler:^(BOOL success) {
-                  NSLog(@"success is %s", success ? "true" : "false");
+              //    NSLog(@"success is %s", success ? "true" : "false");
                   operation(document, success);
                   self.preparingDocument = NO;
               }];
@@ -58,7 +58,7 @@
             BOOL success = YES;
             operation(document, success);
             self.preparingDocument = NO;
-            NSLog(@"set success to yes");
+            //NSLog(@"set success to yes");
         }
     }
 }

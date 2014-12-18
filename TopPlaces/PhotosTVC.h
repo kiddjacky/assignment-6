@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 m2m server software gmbh. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CoreDataTableViewController.h"
 
-@interface PhotosTVC : UITableViewController
+@interface PhotosTVC : CoreDataTableViewController
 
-@property (nonatomic, strong) NSArray *photos; // of Flickr photos NSDicitionary
+-(void) prepareViewController:(id)vc forSegue:(NSString *)segueIdentifer fromIndexPath:(NSIndexPath *)indexPath;
 
 @end
