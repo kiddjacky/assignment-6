@@ -9,6 +9,12 @@
 #import "FlickrFetcher.h"
 
 @interface FlickrHelper : FlickrFetcher
+#define FLICKR_FETCH @"Flickr Download Session"
+#define FLICKR_FETCH_RECENT_RECENT_PHOTOS @"Flickr Download Task to Download Recent Photos"
+#define BACKGROUND_FLICKR_FETCH_TIMEOUT 10
+#define FLICKR_FETCH_REGION @"Flickr Download Task to Download Region"
+#define STARTCELLULAR @"startCellularFlickrFetch"
+#define FINISHCELLULAR @"finishedCellularFlickrFetch"
 
 + (void)loadTopPlacesOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler;
 + (void)loadTopRegionsOnCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler;
@@ -16,7 +22,9 @@
                maxResults:(NSUInteger)results
              onCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler;
 
-+(void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^) (NSArray *photos, void(^whenDne)())) completionHandler;
++(void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^) (NSArray *photos, void(^whenDne)())) completionHandler
+                                allowingCellularAccess:(BOOL)cellular;
+
 +(void)handleEventsForBackgroundURLSession:(NSString *)identifier
                          completionHandler:(void(^)())completionHandler;
 
@@ -29,6 +37,11 @@ typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)()
 
 
 @property (strong, nonatomic) NSURLSession *downloadSession;
+@property (strong, nonatomic) NSURLSession *cellularDownloadSession;
+@property (strong, nonatomic) NSURLSession *currentDownloadSession;
+@property (nonatomic) BOOL allowingCellularAccess;
+
++(BOOL)isCellularDownloadSession;
 
 @property (copy, nonatomic) void (^recentPhotosCompletionHandler)(NSArray *photos, void(^whenDone)());
 @property (copy, nonatomic) void (^downloadBackgroundURLSessionCompletionHandler)();

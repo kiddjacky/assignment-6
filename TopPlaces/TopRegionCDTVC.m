@@ -7,7 +7,7 @@
 //
 
 #import "TopRegionCDTVC.h"
-//#import "FlickrHelper.h"
+#import "FlickrHelper.h"
 //#import "Region+create.h"
 //#import "DocumentHelper.h"
 #import "Region.h"
@@ -39,11 +39,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contextChanged:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:self.manageObjectContext];
+                                             selector:@selector(finishedRefreshing)
+                                                 name:FINISHCELLULAR
+                                               object:nil];
+    [self.refreshControl addTarget:self action:@selector(fetchRegions) forControlEvents:UIControlEventValueChanged];
     NSLog(@"topregion");
 }
+
+-(void)finishedRefreshing
+{
+    if ([FlickrHelper isCellularDownloadSession]) {
+        [self.refreshControl endRefreshing];
+        NSLog(@"ending refresh");
+    }
+}
+
 /*
 -(void)viewWillDisappear {
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -51,6 +61,14 @@
                                                   object:self.manageObjectContext];
     //[super viewWillDisappear];
 }*/
+
+
+-(void)fetchRegions
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:STARTCELLULAR
+                                                        object:self];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

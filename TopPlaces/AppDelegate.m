@@ -33,10 +33,24 @@
                                            selector:@selector(startFlickrFetch:)
                                            userInfo:nil
                                             repeats:YES];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(startCellularFlickrFetch)
+                                                         name:STARTCELLULAR
+                                                       object:nil];
+            [Photo removeOldPhotosFromManagedObjectContext:document.managedObjectContext];
         }
     }];
     [self startFlickrFetch];
     return YES;
+}
+
+-(void)startFlickrFetchAllowingCellularAccess:(BOOL)cellular
+{
+    [FlickrHelper startBackgroundDownloadRecentPhotosOnCompletion:^(NSArray *photos, void (^whenDone) ()) {
+        NSLog(@"%lu photos fetched", (unsigned long)[photos count]);
+        [self useDocumentWithFlickrPhotos:photos];
+        if (whenDone) whenDone();
+    } allowingCellularAccess:cellular];
 }
 
 -(void) startFlickrFetch:(NSTimer *) timer
@@ -44,15 +58,14 @@
     [self startFlickrFetch];
 }
 
+-(void)startCellularFlickrFetch
+{
+    [self startFlickrFetchAllowingCellularAccess:YES];
+}
 
 -(void) startFlickrFetch
 {
-    [FlickrHelper startBackgroundDownloadRecentPhotosOnCompletion:^(NSArray *photos, void (^whenDone) ()) {
-            NSLog(@"%lu photos fetched", (unsigned long)[photos count]);
-            [self useDocumentWithFlickrPhotos:photos];
-        if (whenDone) whenDone();
-    }];
-    NSLog(@"start");
+    [self startFlickrFetchAllowingCellularAccess:NO];
 }
 
 -(void) application:(UIApplication *)application

@@ -22,5 +22,6 @@
 @dynamic region;
 @dynamic photographer;
 @dynamic recent;
+@dynamic created;
 
 @end

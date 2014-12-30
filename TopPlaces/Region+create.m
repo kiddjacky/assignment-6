@@ -66,13 +66,15 @@
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     
-    if (!matches || error) {
+    if (!matches || ![matches count] || error) {
         //handle error
         if (error) {
         NSLog(@"in region error state");
         }
-        if (!matches) {
-            NSLog(@"nothing match name.length");
+        if (![matches count]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:FINISHCELLULAR
+                                                                object:self];
+            NSLog(@"no name is empty");
         }
         else {
             NSLog(@"match count more than 1");
@@ -80,7 +82,7 @@
     }
     else {
         BOOL saveDocument = NO;
-        
+        NSLog(@"match count is %lu", [matches count]);
         for (Region *match in matches) {
             if ([match isEqual:[matches lastObject]]) {
                 saveDocument = YES;
@@ -127,6 +129,7 @@
                                     [document saveToURL:document.fileURL
                                        forSaveOperation:UIDocumentSaveForOverwriting
                                       completionHandler:nil];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:FINISHCELLULAR object:self];
                                     //NSLog(@"save regions");
                                 }
                             }

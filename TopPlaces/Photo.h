@@ -17,8 +17,9 @@
 @property (nonatomic, retain) NSString * subtitle;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * unique;
-@property (nonatomic, retain) NSString * thumbnail;
+@property (nonatomic, retain) NSData * thumbnail;
 @property (nonatomic, retain) NSString * thumbnailURL;
+@property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) Region *region;
 @property (nonatomic, retain) Photographer *photographer;
 @property (nonatomic, retain) Recent *recent;
