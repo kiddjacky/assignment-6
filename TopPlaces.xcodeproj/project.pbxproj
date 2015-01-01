@@ -33,6 +33,7 @@
 		5B710B4F1853807700C19E5F /* RecentPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B4E1853807700C19E5F /* RecentPhotos.m */; };
 		5B710B521853832D00C19E5F /* RecentPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B511853832D00C19E5F /* RecentPhotosTVC.m */; };
 		DE02C0241A34457500FC482F /* TopRegionCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE02C0231A34457500FC482F /* TopRegionCDTVC.m */; };
+		DE31904B1A54D166008D03FC /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DE31904A1A54D166008D03FC /* ImageCache.m */; };
 		DE6AF3F91A29481C00FDC83D /* DocumentHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6AF3F81A29481C00FDC83D /* DocumentHelper.m */; };
 		DEAFE1F119FCA459006A834D /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE1EF19FCA459006A834D /* DataModel.xcdatamodeld */; };
 		DEAFE2001A0603E6006A834D /* Region.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE1FF1A0603E6006A834D /* Region.m */; };
@@ -102,6 +103,8 @@
 		DE02C0221A34457500FC482F /* TopRegionCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopRegionCDTVC.h; sourceTree = "<group>"; };
 		DE02C0231A34457500FC482F /* TopRegionCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopRegionCDTVC.m; sourceTree = "<group>"; };
 		DE02C0251A34F1E100FC482F /* PhotoDatabaseAvailability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDatabaseAvailability.h; sourceTree = "<group>"; };
+		DE3190491A54D166008D03FC /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		DE31904A1A54D166008D03FC /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		DE6AF3F71A29481C00FDC83D /* DocumentHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentHelper.h; sourceTree = "<group>"; };
 		DE6AF3F81A29481C00FDC83D /* DocumentHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentHelper.m; sourceTree = "<group>"; };
 		DEAFE1F019FCA459006A834D /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -195,6 +198,8 @@
 				DEAFE2051A0603E6006A834D /* Photo.m */,
 				DEAFE20A1A06B0C8006A834D /* Photo+Flickr.h */,
 				DEAFE20B1A06B0C8006A834D /* Photo+Flickr.m */,
+				DE3190491A54D166008D03FC /* ImageCache.h */,
+				DE31904A1A54D166008D03FC /* ImageCache.m */,
 				DE02C0221A34457500FC482F /* TopRegionCDTVC.h */,
 				DE02C0231A34457500FC482F /* TopRegionCDTVC.m */,
 				DEDEC9CD1A3EC7D1008C6074 /* RegionPhotoCDTVC.h */,
@@ -421,6 +426,7 @@
 				DEAFE2091A0603E7006A834D /* Photographer.m in Sources */,
 				DEAFE2161A09D2B3006A834D /* PhotographersCDTVC.m in Sources */,
 				DEDEC9CF1A3EC7D1008C6074 /* RegionPhotoCDTVC.m in Sources */,
+				DE31904B1A54D166008D03FC /* ImageCache.m in Sources */,
 				5B0D0E751850BF5A00298282 /* FlickrFetcher.m in Sources */,
 				DEAFE20F1A094C3B006A834D /* Photographer+Create.m in Sources */,
 				5B0D0E81185106A300298282 /* TopPlacesTVC.m in Sources */,

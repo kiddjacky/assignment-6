@@ -33,21 +33,21 @@
             region= [NSEntityDescription insertNewObjectForEntityForName:@"Region"
                                                   inManagedObjectContext:context];
             //region.name = [FlickrHelp];
-            region.num_photographers = [NSNumber numberWithInt:1];
-            region.num_photos = [NSNumber numberWithInt:1];
+            region.num_photographers = @1;
+            region.num_photos = @1;
             region.placeID = placeID;
             [region addPhotographersObject:photographer];
             NSLog(@"%@", region.placeID);
         }
         else {
             region = [matches firstObject];
-            int num_photos = [region.num_photos intValue];
-            region.num_photos = [NSNumber numberWithInt:(num_photos + 1)];
+            //int num_photos = [region.num_photos intValue];
+            region.num_photos = @([region.num_photos intValue] +1);
             
             if(![region.photographers member:photographer]) {
                 [region addPhotographersObject:photographer];
-                int num_photographers = [region.num_photographers intValue];
-                region.num_photographers = [NSNumber numberWithInt:(num_photographers + 1)];
+                //int num_photographers = [region.num_photographers intValue];
+                region.num_photographers = @([region.num_photographers intValue] +1);
             }
             NSLog(@"%@ already in database", region.placeID);
             

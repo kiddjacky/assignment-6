@@ -16,7 +16,7 @@
 @implementation AppDelegate
 
 
-#define FOREGROUND_FLICKR_FETCH_INTERVAL (30)
+#define FOREGROUND_FLICKR_FETCH_INTERVAL (60)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

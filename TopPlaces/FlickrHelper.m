@@ -276,7 +276,6 @@ didFinishDownloadingToURL:(NSURL *)location
 
 
 
-
 + (NSString *)titleOfPlace:(NSDictionary *)place
 {
     return [[[place valueForKeyPath:FLICKR_PLACE_NAME]

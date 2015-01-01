@@ -7,6 +7,7 @@
 //
 
 #import "ImageVC.h"
+#import "ImageCache.h"
 
 @interface ImageVC () <UIScrollViewDelegate, UISplitViewControllerDelegate>
 
@@ -43,16 +44,28 @@
     return self.imageView.image;
 }
 
+
 - (void)setImage:(UIImage *)image
 {
-    self.scrollView.zoomScale = 1.0;
     self.imageView.image = image;
+    [self fitImage:image];
+
+}
+
+-(void)fitImage:(UIImage *)image {
+    self.scrollView.zoomScale = 1.0;
     [self.imageView sizeToFit];
     self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
     self.scrollView.contentSize = self.image ? self.image.size : CGSizeZero;
     [self.spinner stopAnimating];
     [self setZoomScaleToFillScreen];
 }
+
+-(void)viewDidLayoutSubviews
+{
+    if (self.imageView.image) [self fitImage:self.imageView.image];
+}
+
 
 - (void)setZoomScaleToFillScreen
 {
@@ -79,20 +92,28 @@
                                                 completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
                                                     if (!error) {
                                                         if ([response.URL isEqual:self.imageURL]) {
-                                                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+                                                            NSData *imageData = [NSData dataWithContentsOfURL:location];
+                                                            UIImage *image = [UIImage imageWithData:imageData];
+                                                            [ImageCache cacheImageData:imageData forURL:self.imageURL];
                                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                                 self.image = image;
                                                             });
                                                         }
                                                     }
                                                 }];
+ 
     [task resume];
 }
 
 - (void)setImageURL:(NSURL *)imageURL
 {
     _imageURL = imageURL;
-    [self fetchImage];
+    UIImage *cachedImage = [ImageCache cachedImageForURL:_imageURL];
+    if (cachedImage) {
+        self.image = cachedImage;
+    } else {
+        [self fetchImage];
+    }
 }
 
 - (void)viewDidLoad

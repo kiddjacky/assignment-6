@@ -90,18 +90,32 @@
 }
 
 -(void) remove {
-    //remove photographer
-    if ([self.photographer.photos count] == 1) {
-        [self.managedObjectContext deleteObject:self.photographer];
-    }
+
     //remove regions
     if ([self.region.photos count] == 1) {
+        //NSLog(@"remove region %@", self.region);
         [self.managedObjectContext deleteObject:self.region];
     } else { //else deduct region, what happen to region.photographers? handle in first if statement
-        self.region.num_photographers = @([self.region.photographers count]);
-        self.region.num_photos = @([self.region.photos count]-1);
+        if (!self.region) {
+            NSLog(@"photo region is null %@",self);
+        } else {
+        if ([Photo num_photo_of_photographer:self.photographer in_region:self.region] == 1) {
+            //NSLog(@"remove region photographer %@", self.photographer);
+            self.region.num_photographers = @([self.region.num_photographers intValue] -1);
+            [self.region removePhotographersObject:self.photographer];
+        }
+        self.region.num_photos = @([self.region.num_photos intValue]-1);
+        //NSLog(@"remove photo in region %@, now regions photo count is %@, photographers count is %@", self.region.name, self.region.num_photos, self.region.num_photographers);
+                        [self.region removePhotosObject:self];
+        }
+    }
+    //remove photographer
+    if ([self.photographer.photos count] == 1) {
+        //NSLog(@"remove photographer %@", self.photographer);
+        [self.managedObjectContext deleteObject:self.photographer];
     }
     if (self.recent) {
+        //NSLog(@"remove recent photo %@", self.recent);
         [self.managedObjectContext deleteObject:self.recent];
     }
     [self.managedObjectContext deleteObject:self];
@@ -109,7 +123,16 @@
 
 
 
-
++(NSInteger) num_photo_of_photographer:(Photographer *)photographer in_region:(Region *)region
+{
+    NSInteger result = 0;
+    for (Photo *photo in region.photos) {
+        if ([photo.photographer isEqual:photographer]) {
+            result++;
+        }
+    }
+    return result;
+}
 
 
 
