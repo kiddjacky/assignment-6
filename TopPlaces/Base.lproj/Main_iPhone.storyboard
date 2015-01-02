@@ -70,7 +70,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WzX-Mk-9by" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1670" y="59"/>
+            <point key="canvasLocation" x="1648" y="59"/>
         </scene>
         <!--Recents-->
         <scene sceneID="wck-GG-MdS">
@@ -189,7 +189,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="d0g-KU-E4E" kind="push" identifier="Photos" id="QsI-Kr-X2j"/>
+                                    <segue destination="wBK-Ug-k06" kind="push" identifier="Photos" id="OAB-MI-wLz"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -206,6 +206,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ww-lb-FQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1100" y="59"/>
+        </scene>
+        <!--Region Map View Controller-->
+        <scene sceneID="kKo-Zg-XuK">
+            <objects>
+                <viewController id="wBK-Ug-k06" customClass="RegionMapViewController" sceneMemberID="viewController">
+                    <mapView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="ahS-IO-FuS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </mapView>
+                    <navigationItem key="navigationItem" id="yQM-52-vFB"/>
+                    <connections>
+                        <outlet property="mapView" destination="ahS-IO-FuS" id="6C2-JZ-NFV"/>
+                        <segue destination="1H1-m7-zRI" kind="push" identifier="Show Photos" id="cfX-5A-EtL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xon-ts-dK9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1642" y="-662"/>
         </scene>
         <!--Top Places-->
         <scene sceneID="2OZ-sJ-fXe">
@@ -255,6 +273,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="mWn-1h-yJO"/>
+        <segue reference="cfX-5A-EtL"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -2,11 +2,12 @@
 //  Photo.m
 //  TopPlaces
 //
-//  Created by kiddjacky on 11/1/14.
-//  Copyright (c) 2014 m2m server software gmbh. All rights reserved.
+//  Created by kiddjacky on 1/1/15.
+//  Copyright (c) 2015 m2m server software gmbh. All rights reserved.
 //
 
 #import "Photo.h"
+#import "Photographer.h"
 #import "Recent.h"
 #import "Region.h"
 
@@ -15,13 +16,15 @@
 
 @dynamic imageURL;
 @dynamic subtitle;
-@dynamic title;
-@dynamic unique;
 @dynamic thumbnail;
 @dynamic thumbnailURL;
-@dynamic region;
+@dynamic title;
+@dynamic unique;
+@dynamic created;
+@dynamic latitude;
+@dynamic longtitude;
 @dynamic photographer;
 @dynamic recent;
-@dynamic created;
+@dynamic region;
 
 @end

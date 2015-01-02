@@ -13,6 +13,7 @@
 #import "Region.h"
 #import "PhotoDatabaseAvailability.h"
 #import "RegionPhotoCDTVC.h"
+#import "RegionMapViewController.h"
 
 @interface TopRegionCDTVC ()
 
@@ -115,6 +116,9 @@
         //NSLog(@"Region to segue is %@", region);
         RegionPhotoCDTVC  *regionPhotoCDTVC = (RegionPhotoCDTVC *)vc;
         regionPhotoCDTVC.region = region;
+    } else if ([vc isKindOfClass:[RegionMapViewController class]]) {
+        RegionMapViewController *rmapvc= (RegionMapViewController *)vc;
+        rmapvc.region = region;
     }
 }
 
